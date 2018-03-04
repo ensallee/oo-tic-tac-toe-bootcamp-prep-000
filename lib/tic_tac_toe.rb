@@ -22,4 +22,51 @@ def display_board
   puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
 end
 
+def input_to_index(user_input)
+  user_input.to_i - 1
+end
+
+def move(index, character="X")
+  @board[index]=character
+end
+
+def position_taken?(location)
+  @board[location] != " " && @board[location] != ""
+end
+
+def valid_move?(index)
+  index.between?(0,8) && !position_taken?(@board, index)
+end
+
+def turn
+  puts "Please enter 1-9:"
+  user_input = gets.strip
+  index = input_to_index(user_input)
+  if current_player(@board) == "X"
+    character = "X"
+  elsif current_player(@board) == "O"
+    character = "O"
+  end
+  if valid_move?(index)
+    move(index, character)
+    display_board
+  else
+    turn
+  end
+end
+
+def turn_count
+  counter=0
+  @board.each do |turn|
+    if turn != " " && turn != ""
+      counter += 1
+    end
+  end
+  return counter
+end
+
+def current_player
+  turn_count % 2 == 0 ? "X" : "O"
+end
+
 end
